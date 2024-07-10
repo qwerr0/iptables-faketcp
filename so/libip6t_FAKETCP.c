@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <xtables.h>
-#include <linux/netfilter_ipv4/ip_tables.h>
+#include <linux/netfilter_ipv6/ip6_tables.h>
 
 #include "../nf_faketcp.h"
 
@@ -30,10 +30,10 @@ static const struct xt_option_entry FAKETCP_opts[] = {
 static void FAKETCP_parse(struct xt_option_call *cb)
 {
 	struct ipt_FAKETCP_info *info = cb->data;
-	const struct ipt_entry *xt_entry = cb->xt_entry;
+	const struct ip6t_entry *xt_entry = cb->xt_entry;
 
-	if (!(xt_entry->ip.proto == IPPROTO_TCP
-	    || xt_entry->ip.proto == IPPROTO_UDP)) {
+	if (!(xt_entry->ipv6.proto == IPPROTO_TCP
+	    || xt_entry->ipv6.proto == IPPROTO_UDP)) {
 			xtables_error(PARAMETER_PROBLEM,
 						"FAKETCP: Need TCP or UDP protocol");
 		}
@@ -75,7 +75,7 @@ static void FAKETCP_save(const void *ip, const struct xt_entry_target *target)
 static struct xtables_target faketcp_tg_reg = {
 	.name		= "FAKETCP",
 	.version	= XTABLES_VERSION,
-	.family		= NFPROTO_IPV4,
+	.family		= NFPROTO_IPV6,
 	.size		= XT_ALIGN(sizeof(struct ipt_FAKETCP_info)),
 	.userspacesize	= XT_ALIGN(sizeof(struct ipt_FAKETCP_info)),
 	.help		= FAKETCP_help,
